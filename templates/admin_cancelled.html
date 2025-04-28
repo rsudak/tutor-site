@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}История отмен{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">История отменённых записей</h1>
+
+<form method="get" class="row g-3 align-items-end mb-4">
+  <div class="col-md-4">
+    <label class="form-label">Фильтр по предмету</label>
+    <select name="subject" class="form-select">
+      <option value="" {% if not selected_subject %}selected{% endif %}>Все предметы</option>
+      <option value="Математика" {% if selected_subject == "Математика" %}selected{% endif %}>Математика</option>
+      <option value="Физика" {% if selected_subject == "Физика" %}selected{% endif %}>Физика</option>
+      <option value="Информатика" {% if selected_subject == "Информатика" %}selected{% endif %}>Информатика</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Фильтр по дате</label>
+    <input type="date" name="date" class="form-control" value="{{ selected_date }}">
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label">Поиск по имени</label>
+    <input type="text" name="name" class="form-control" placeholder="Имя ученика" value="{{ selected_name }}">
+  </div>
+
+  <div class="col-md-2 text-end">
+    <button type="submit" class="btn btn-primary w-100">Применить</button>
+  </div>
+</form>
+
+{% if records %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Дата занятия</th>
+          <th>Время</th>
+          <th>Предмет</th>
+          <th>Имя</th>
+          <th>Email</th>
+          <th>Комментарий</th>
+          <th>Отменено</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in records %}
+        <tr>
+          <td>{{ entry.preferred_date }}</td>
+          <td>{{ entry.preferred_time[:5] }}</td>
+          <td>{{ entry.subject }}</td>
+          <td>{{ entry.name }}</td>
+          <td>{{ entry.email }}</td>
+          <td>{{ entry.message }}</td>
+          <td>{{ entry.cancelled_at.strftime('%d.%m.%Y %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">Нет отменённых записей по заданным критериям.</p>
+{% endif %}
+{% endblock %}
+

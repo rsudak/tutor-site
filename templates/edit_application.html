@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать заявку{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Редактировать заявку</h1>
+
+<form method="POST" class="border p-4 rounded shadow-sm">
+  <div class="mb-3">
+    <label class="form-label">Имя</label>
+    <input type="text" name="name" class="form-control" value="{{ entry.name }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="email" name="email" class="form-control" value="{{ entry.email }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Предмет</label>
+    <select name="subject" class="form-select" required>
+      {% for subj in ["Математика", "Физика", "Информатика"] %}
+        <option value="{{ subj }}" {% if entry.subject == subj %}selected{% endif %}>{{ subj }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Комментарий</label>
+    <textarea name="message" class="form-control" rows="4" required>{{ entry.message }}</textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Дата</label>
+    <input type="date" name="preferred_date" class="form-control" value="{{ entry.preferred_date }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Время</label>
+    <input type="time" name="preferred_time" class="form-control" value="{{ entry.preferred_time }}">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+  <a href="/admin/applications" class="btn btn-secondary ms-2">Отмена</a>
+</form>
+{% endblock %}

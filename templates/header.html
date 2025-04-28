@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm" id="main-navbar">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">Репетитор Алексей</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+        <li class="nav-item"><a class="nav-link" href="/services">Услуги</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contacts">Контакты</a></li>
+        <li class="nav-item"><a class="nav-link" href="/reviews">Отзывы</a></li>
+        <li class="nav-item"><a class="nav-link" href="/faq">FAQ</a></li>
+      
+        {% if session.student_logged_in %}
+          <!-- Ученик вошёл -->
+          <li class="nav-item"><a class="nav-link" href="/student/profile">Кабинет ученика</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout_student">Выход</a></li>
+        {% else %}
+          <!-- Гость -->
+          <li class="nav-item"><a class="nav-link" href="/register">Регистрация</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login_student">Вход</a></li>
+        {% endif %}
+      
+        {% if session.logged_in %}
+          <!-- Админ вошёл -->
+          <li class="nav-item"><a class="nav-link" href="/admin">Админка</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout">Выход</a></li>
+        {% endif %}
+        
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-sm btn-outline-secondary ms-2">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>      
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Дополнительная настройка классов навбара при переключении темы
+  const navbar = document.getElementById('main-navbar');
+  const rootTheme = document.documentElement.getAttribute('data-theme');
+  const updateNavbarTheme = (theme) => {
+    if (!navbar) return;
+    if (theme === 'dark') {
+      navbar.classList.remove('navbar-light', 'bg-light');
+      navbar.classList.add('navbar-dark', 'bg-dark');
+    } else {
+      navbar.classList.remove('navbar-dark', 'bg-dark');
+      navbar.classList.add('navbar-light', 'bg-light');
+    }
+  };
+
+  updateNavbarTheme(rootTheme);
+
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const newTheme = document.documentElement.getAttribute('data-theme');
+    updateNavbarTheme(newTheme);
+  });
+</script>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Панель администратора{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Панель администратора</h1>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <i class="bi bi-inbox-fill display-4 text-primary"></i>
+        <h5 class="card-title mt-3">Заявки учеников</h5>
+        <a href="/admin/applications" class="btn btn-outline-primary mt-2">Перейти</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <i class="bi bi-chat-dots-fill display-4 text-success"></i>
+        <h5 class="card-title mt-3">Отзывы</h5>
+        <a href="/admin/reviews" class="btn btn-outline-success mt-2">Перейти</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <i class="bi bi-door-open-fill display-4 text-danger"></i>
+        <h5 class="card-title mt-3">Выход</h5>
+        <a href="/logout" class="btn btn-outline-danger mt-2">Выйти</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card text-center shadow-sm">
+    <div class="card-body">
+      <i class="bi bi-bar-chart-fill display-4 text-info"></i>
+      <h5 class="card-title mt-3">Статистика</h5>
+      <a href="/admin/stats" class="btn btn-outline-info mt-2">Перейти</a>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card text-center shadow-sm">
+    <div class="card-body">
+      <i class="bi bi-calendar-check display-4 text-warning"></i>
+      <h5 class="card-title mt-3">Моё расписание</h5>
+      <a href="/admin/schedule" class="btn btn-outline-warning mt-2">Открыть</a>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card text-center shadow-sm">
+    <div class="card-body">
+      <i class="bi bi-x-circle display-4 text-danger"></i>
+      <h5 class="card-title mt-3">История отмен</h5>
+      <a href="/admin/cancelled" class="btn btn-outline-danger mt-2">Просмотреть</a>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card text-center shadow-sm">
+    <div class="card-body">
+      <i class="bi bi-lock-fill display-4 text-secondary"></i>
+      <h5 class="card-title mt-3">Закрытые слоты</h5>
+      <a href="/admin/blocked" class="btn btn-outline-secondary mt-2">Управлять</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

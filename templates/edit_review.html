@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать отзыв{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Редактировать отзыв</h1>
+
+<form method="POST" class="border p-4 rounded shadow-sm">
+  <div class="mb-3">
+    <label class="form-label">Имя</label>
+    <input type="text" name="name" class="form-control" value="{{ review.name }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Предмет</label>
+    <select name="subject" class="form-select" required>
+      {% for subj in ["Математика", "Физика", "Информатика"] %}
+        <option value="{{ subj }}" {% if review.subject == subj %}selected{% endif %}>{{ subj }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Отзыв</label>
+    <textarea name="message" class="form-control" rows="4" required>{{ review.message }}</textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+  <a href="/admin/reviews" class="btn btn-secondary ms-2">Отмена</a>
+</form>
+{% endblock %}

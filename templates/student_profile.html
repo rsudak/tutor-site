@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  {% if success_message %}
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+      {{ success_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+  {% endif %}
+
+  <h1 class="mb-4">Личный кабинет ученика</h1>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ student.name }}</h5>
+      <p class="card-text text-muted mb-1">{{ student.email }}</p>
+
+      <div class="mt-3">
+        <a href="/student/edit" class="btn btn-outline-primary me-2">Редактировать профиль</a>
+        <a href="/logout_student" class="btn btn-outline-secondary">Выйти</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mb-3">Мои занятия в календаре</h2>
+
+  <div class="mb-4">
+    <label for="subjectFilter" class="form-label">Фильтр по предмету:</label>
+    <select id="subjectFilter" class="form-select w-auto d-inline-block ms-2">
+      <option value="">Все предметы</option>
+      <option value="Математика">Математика</option>
+      <option value="Физика">Физика</option>
+      <option value="Информатика">Информатика</option>
+    </select>
+  </div>
+  
+  <div id="calendar" class="mb-5"></div>
+
+  <hr class="my-5">
+
+  <h2 class="mb-3 mt-5">Мои заявки</h2>
+
+  <!-- Форма фильтрации -->
+  <form method="GET" action="" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label class="form-label">Предмет</label>
+      <select name="subject" class="form-select">
+        <option value="">Все предметы</option>
+        <option value="Математика" {% if subject_filter == 'Математика' %}selected{% endif %}>Математика</option>
+        <option value="Физика" {% if subject_filter == 'Физика' %}selected{% endif %}>Физика</option>
+        <option value="Информатика" {% if subject_filter == 'Информатика' %}selected{% endif %}>Информатика</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Дата от</label>
+      <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Дата до</label>
+      <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+    </div>
+
+    <div class="col-md-2 d-flex flex-column align-items-end">
+      <button type="submit" class="btn btn-primary w-100 mb-2">Фильтровать</button>
+      <a href="/student/profile" class="btn btn-outline-secondary w-100">Сбросить</a>
+    </div>
+  </form>
+
+  {% if applications %}
+    <div class="row">
+      {% for app in applications %}
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ app.subject }}</h5>
+              <p class="card-text">{{ app.message }}</p>
+            </div>
+            <div class="card-footer text-muted small">
+              {{ app.preferred_date }} в {{ app.preferred_time }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Вы пока не оставляли заявок.</p>
+  {% endif %}
+
+</div>
+
+<!-- Скрипт FullCalendar -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var subjectFilter = document.getElementById('subjectFilter');
+
+    var allEvents = {{ calendar_events|tojson }};
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'ru',
+      height: 650,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek'
+      },
+      events: allEvents,
+      eventDidMount: function(info) {
+        let tooltip = new bootstrap.Tooltip(info.el, {
+          title: info.event.title,
+          placement: 'top',
+          trigger: 'hover',
+          container: 'body'
+        });
+
+        if (info.event.title.includes('Математика')) {
+          info.el.style.backgroundColor = '#007bff';
+          info.el.style.borderColor = '#007bff';
+        } else if (info.event.title.includes('Физика')) {
+          info.el.style.backgroundColor = '#28a745';
+          info.el.style.borderColor = '#28a745';
+        } else if (info.event.title.includes('Информатика')) {
+          info.el.style.backgroundColor = '#ffc107';
+          info.el.style.borderColor = '#ffc107';
+        }
+      }
+    });
+
+    calendar.render();
+
+    // Фильтрация событий по предмету
+    subjectFilter.addEventListener('change', function() {
+      var selected = subjectFilter.value;
+      var filteredEvents = allEvents.filter(function(event) {
+        return selected === '' || event.title.includes(selected);
+      });
+
+      calendar.batchRendering(() => {
+        calendar.removeAllEvents();
+        calendar.addEventSource(filteredEvents);
+      });
+    });
+  });
+</script>
+
+
+{% endblock %}

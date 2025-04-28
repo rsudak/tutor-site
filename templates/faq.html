@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Вопросы и ответы{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Часто задаваемые вопросы</h1>
+
+<div class="accordion" id="faqAccordion">
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="q1">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true">
+        Как записаться на занятие?
+      </button>
+    </h2>
+    <div id="a1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+      <div class="accordion-body">
+        Перейдите на вкладку «Контакты», заполните форму, выберите удобную дату и время — и нажмите «Записаться».
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="q2">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
+        Какие предметы вы преподаёте?
+      </button>
+    </h2>
+    <div id="a2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+      <div class="accordion-body">
+        Математика, физика и информатика — подготовка к ОГЭ, ЕГЭ и углублённое изучение школьной программы.
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="q3">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
+        Сколько стоят занятия?
+      </button>
+    </h2>
+    <div id="a3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+      <div class="accordion-body">
+        Стоимость зависит от предмета и формата. Вы можете использовать калькулятор на странице «Услуги» для оценки.
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="q4">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4">
+        Онлайн или очно?
+      </button>
+    </h2>
+    <div id="a4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+      <div class="accordion-body">
+        Я провожу как онлайн-занятия, так и очные. Выберите удобный формат при записи.
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

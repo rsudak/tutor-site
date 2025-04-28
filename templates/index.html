@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <img src="{{ url_for('static', filename='images/tutor.jpg') }}" class="shadow rounded mb-3" style="max-width: 280px;" alt="Фото репетитора">
+    <h1 class="mt-3">Любивый Алексей</h1>
+    <p class="lead">Репетитор по физике, математике и информатике</p>
+</div>
+
+<hr>
+
+<div class="mb-4">
+    <h3 class="mb-3"><i class="bi bi-people-fill text-primary"></i> Кому подойдут занятия:</h3>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><i class="bi bi-journal-check me-2 text-success"></i> Ученики, готовящиеся к ОГЭ и ЕГЭ</li>
+      <li class="list-group-item"><i class="bi bi-lightbulb me-2 text-warning"></i> Те, кто хочет подтянуть школьную программу</li>
+      <li class="list-group-item"><i class="bi bi-person-lines-fill me-2 text-info"></i> Школьники с пробелами в знаниях</li>
+      <li class="list-group-item"><i class="bi bi-chat-dots me-2 text-danger"></i> Все, кому нужно объяснение сложных тем</li>
+    </ul>
+</div>
+
+<div class="mb-5">
+    <h3 class="mb-4 text-center"><i class="bi bi-star-fill text-warning"></i> Преимущества занятий со мной</h3>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 text-center bg-light">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-person-check me-2 text-primary"></i> Индивидуальный подход</h5>
+                    <p class="card-text">Каждое занятие адаптируется под уровень и цели ученика.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 text-center bg-light">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-diagram-3 me-2 text-success"></i> Пошаговое объяснение</h5>
+                    <p class="card-text">Сложные темы подаются просто и логично, с примерами.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 text-center bg-light">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-laptop me-2 text-secondary"></i> Удобный формат</h5>
+                    <p class="card-text">Занятия возможны как онлайн, так и очно — под ваш график.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mb-4 text-center">💬 Что говорят ученики</h3>
+<div class="row mb-5">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <p class="card-text">"С Алексеем математика стала наконец-то понятной. Сдала ЕГЭ на 86 баллов!"</p>
+        <footer class="blockquote-footer">Анна, 11 класс</footer>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <p class="card-text">"Физика больше не пугает. На ОГЭ всё решил сам. Большое спасибо!"</p>
+        <footer class="blockquote-footer">Илья, 9 класс</footer>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <p class="card-text">"Отличный преподаватель — добрый, грамотный, очень понятно объясняет!"</p>
+        <footer class="blockquote-footer">Марина, мама ученика</footer>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center mb-5">
+    <a href="/contacts" class="btn btn-primary btn-lg px-5">Записаться на пробное занятие</a>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Заявки{% endblock %}
+
+{% block content %}
+<h1>Список записей</h1>
+
+<div class="text-end mb-4">
+    <a href="/admin/reviews" class="btn btn-outline-primary">Управление отзывами</a>
+  </div>
+
+{% if records %}
+    <div class="list-group">
+    {% for entry in records %}
+    <div class="list-group-item">
+        <h5>{{ entry.name }} <small class="text-muted">({{ entry.email }})</small></h5>
+        <p><strong>Предмет:</strong> {{ entry.subject }}</p>
+        <p><strong>Дата:</strong> {{ entry.preferred_date }} <strong>в</strong> {{ entry.preferred_time }}</p>
+        <p>{{ entry.message }}</p>
+        <a href="/admin/applications/edit/{{ entry.id }}" class="btn btn-sm btn-outline-primary me-2">Редактировать</a>
+        <a href="/admin/applications/delete/{{ entry.id }}" class="btn btn-danger btn-sm"
+           onclick="return confirm('Удалить эту запись?');">Удалить</a>
+      </div>      
+    {% endfor %}
+    </div>
+{% else %}
+    <p class="text-muted">Нет записей.</p>
+{% endif %}
+{% endblock %}
+

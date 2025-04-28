@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}API Документация{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">API Документация</h1>
+
+<p>Это REST API для взаимодействия с системой репетитора. Оно позволяет получать отзывы и отправлять заявки через внешние приложения или JavaScript.</p>
+
+<h3 class="mt-5">📋 Список маршрутов</h3>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Метод</th>
+      <th>Маршрут</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td><code>/api/reviews</code></td>
+      <td>Получить список всех отзывов в формате JSON</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td><code>/api/applications</code></td>
+      <td>Создать новую заявку (отправка через JSON)</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code>/api/applications?key=... </code></td>
+      <td>Получить все заявки в формате JSON (с авторизацией)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 class="mt-4">🔐 Авторизация</h3>
+<p>Для доступа к API необходимо указать ключ доступа через параметр <code>?key=123456789</code></p>
+
+<pre><code>
+POST /api/applications?key=123456789
+</code></pre>
+
+<h3 class="mt-4">🔐 Авторизация через заголовок</h3>
+<p>Добавьте заголовок:</p>
+<pre><code>Authorization: Bearer supersecrettoken123</code></pre>
+<p>Без него сервер вернёт 403 Forbidden</p>
+
+
+<h3 class="mt-5">📤 Пример POST-запроса</h3>
+
+<pre><code class="language-json">
+POST /api/applications
+Content-Type: application/json
+
+{
+  "name": "Алексей",
+  "email": "alex@example.com",
+  "subject": "Физика",
+  "message": "Хочу подготовиться к ЕГЭ"
+}
+</code></pre>
+
+<h3 class="mt-4">📥 Пример ответа сервера</h3>
+
+<pre><code class="language-json">
+{
+  "status": "ok",
+  "message": "Заявка добавлена"
+}
+</code></pre>
+
+<h3 class="mt-4">📄 Пример ответа от /api/applications</h3>
+<pre><code class="language-json">
+[
+  {
+    "id": 1,
+    "name": "Алексей",
+    "email": "alex@example.com",
+    "subject": "Физика",
+    "message": "Запись на занятие",
+    "preferred_date": "2025-04-22",
+    "preferred_time": "14:00",
+    "created": "2025-04-21 19:40"
+  }
+]
+</code></pre>
+
+<h3 class="mt-4">🔍 Пример использования fetch</h3>
+
+<pre><code class="language-js">
+fetch("/api/applications", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: "Алексей",
+    email: "alex@example.com",
+    subject: "Физика",
+    message: "Хочу подготовиться к ЕГЭ"
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data));
+</code></pre>
+
+{% endblock %}

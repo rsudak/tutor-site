@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Услуги{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Мои услуги</h1>
+<ul class="list-group mb-5">
+    <li class="list-group-item">📘 Подготовка к ЕГЭ и ОГЭ по математике, физике и информатике</li>
+    <li class="list-group-item">💻 Онлайн-занятия через Zoom</li>
+    <li class="list-group-item">👨‍🏫 Очные занятия в Новосибирске</li>
+    <li class="list-group-item">📅 Индивидуальное расписание и гибкий подход</li>
+</ul>
+
+<hr class="my-5">
+
+<h3 class="mb-3"><i class="bi bi-calculator text-primary"></i> Калькулятор стоимости занятий</h3>
+
+<form id="calc-form" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <label for="subject" class="form-label">Предмет</label>
+    <select id="subject" class="form-select" required>
+      <option value="math">Математика</option>
+      <option value="physics">Физика</option>
+      <option value="informatics">Информатика</option>
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <label for="format" class="form-label">Формат занятий</label>
+    <select id="format" class="form-select" required>
+      <option value="online">Онлайн</option>
+      <option value="offline">Очно</option>
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <label for="duration" class="form-label">Длительность занятия</label>
+    <select id="duration" class="form-select" required>
+      <option value="60">60 минут</option>
+      <option value="90">90 минут</option>
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <label for="frequency" class="form-label">Занятий в неделю</label>
+    <input type="number" id="frequency" class="form-control" min="1" max="7" value="2" required>
+  </div>
+
+  <div class="col-md-8 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100">Рассчитать</button>
+  </div>
+</form>
+
+<div id="calc-result" class="alert alert-info d-none"></div>
+
+<script>
+  document.getElementById('calc-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const subject = document.getElementById('subject').value;
+    const format = document.getElementById('format').value;
+    const duration = parseInt(document.getElementById('duration').value);
+    const frequency = parseInt(document.getElementById('frequency').value);
+
+    let basePrices = {
+      math: { online: 1000, offline: 1200 },
+      physics: { online: 1100, offline: 1300 },
+      informatics: { online: 1200, offline: 1400 }
+    };
+
+    let basePrice = basePrices[subject][format];
+
+    if (duration === 90) {
+      basePrice = Math.round(basePrice * 1.5);
+    }
+
+    const weekly = basePrice * frequency;
+    const monthly = weekly * 4;
+
+    const resultText = `
+      <strong>Цена за одно занятие:</strong> ${basePrice} ₽<br>
+      <strong>Примерная стоимость в месяц:</strong> ${monthly} ₽ (при ${frequency} занятиях в неделю)
+    `;
+
+    const resultDiv = document.getElementById('calc-result');
+    resultDiv.innerHTML = resultText;
+    resultDiv.classList.remove('d-none');
+  });
+</script>
+{% endblock %}
+

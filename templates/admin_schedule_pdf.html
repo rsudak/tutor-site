@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+    th, td { border: 1px solid #888; padding: 6px; text-align: left; }
+    th { background-color: #eee; }
+  </style>
+</head>
+<body>
+  <h2>Расписание занятий</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Время</th>
+        <th>Предмет</th>
+        <th>Имя</th>
+        <th>Email</th>
+        <th>Комментарий</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in schedule %}
+      <tr>
+        <td>{{ entry.preferred_date }}</td>
+        <td>{{ entry.preferred_time[:5] }}</td>
+        <td>{{ entry.subject }}</td>
+        <td>{{ entry.name }}</td>
+        <td>{{ entry.email }}</td>
+        <td>{{ entry.message }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

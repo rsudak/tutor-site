@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Админка — отзывы{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Управление отзывами</h1>
+
+{% if reviews %}
+  {% for r in reviews %}
+    <div class="border p-3 mb-3 shadow-sm">
+      <strong>{{ r.name }}</strong> ({{ r.subject }})<br>
+      {{ r.message }}
+      <div class="mt-2">
+        <a href="/admin/reviews/edit/{{ r.id }}" class="btn btn-sm btn-outline-primary me-2">Редактировать</a>
+        <a href="/admin/reviews/delete/{{ r.id }}" class="btn btn-sm btn-danger"
+           onclick="return confirm('Удалить отзыв?')">Удалить</a>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Нет отзывов.</p>
+{% endif %}
+{% endblock %}

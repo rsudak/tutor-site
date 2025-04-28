@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Статистика заявок</h1>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="card text-bg-light h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Всего заявок</h5>
+        <p class="display-6">{{ total_signups }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card text-bg-light h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Всего отзывов</h5>
+        <p class="display-6">{{ total_reviews }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- График по дням -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">Динамика заявок (7 дней)</div>
+  <div class="card-body">
+    <canvas id="chartDays" height="120"></canvas>
+  </div>
+</div>
+
+<!-- Диаграмма по предметам -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">Распределение по предметам</div>
+  <div class="card-body">
+    <canvas id="chartSubjects" height="120"></canvas>
+  </div>
+</div>
+
+<!-- Таблица популярных слотов -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">Популярные временные слоты</div>
+  <div class="card-body">
+    {% if sorted_slots %}
+      <ul class="list-group list-group-flush">
+        {% for slot, count in sorted_slots %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span>{{ slot }}</span>
+          <span class="badge bg-primary rounded-pill">{{ count }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">Нет данных по слотам.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctxDays = document.getElementById("chartDays");
+  new Chart(ctxDays, {
+    type: "line",
+    data: {
+      labels: {{ labels|tojson }},
+      datasets: [{
+        label: "Заявки",
+        data: {{ counts|tojson }},
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        }
+      }
+    }
+  });
+
+  const ctxSubjects = document.getElementById("chartSubjects");
+  new Chart(ctxSubjects, {
+    type: "doughnut",
+    data: {
+      labels: {{ subject_counts.keys()|list|tojson }},
+      datasets: [{
+        data: {{ subject_counts.values()|list|tojson }},
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+</script>
+{% endblock %}

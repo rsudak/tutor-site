@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Отзывы{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Отзывы учеников</h1>
+
+<form method="POST" class="mb-5 border rounded p-4 shadow-sm">
+  <div class="mb-3">
+    <label class="form-label">Ваше имя</label>
+    <input type="text" name="name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Предмет</label>
+    <input type="text" name="subject" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Отзыв</label>
+    <textarea name="message" class="form-control" rows="4" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Оставить отзыв</button>
+</form>
+
+{% for r in reviews %}
+<div class="card mb-3 shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">{{ r.name }} <small class="text-muted">({{ r.subject }})</small></h5>
+    <p class="card-text">{{ r.message }}</p>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

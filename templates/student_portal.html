@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Кабинет ученика{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Мои записи</h1>
+
+<form method="POST" class="mb-4" style="max-width: 400px;">
+  <label for="email" class="form-label">Введите ваш email</label>
+  <input type="email" name="email" class="form-control" required value="{{ email }}">
+  <button type="submit" class="btn btn-primary mt-2">Показать записи</button>
+</form>
+
+{% if records %}
+  <div class="list-group">
+    {% for entry in records %}
+    <div class="list-group-item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5>{{ entry.subject }} — {{ entry.preferred_date }} в {{ entry.preferred_time[:5] }}</h5>
+          <p class="mb-1"><strong>Комментарий:</strong> {{ entry.message }}</p>
+        </div>
+        <form method="POST" action="/student/delete/{{ entry.id }}" onsubmit="return confirm('Удалить запись?')">
+          <button type="submit" class="btn btn-sm btn-outline-danger">Отменить</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% elif email %}
+  <p class="text-muted">Нет записей для {{ email }}</p>
+{% endif %}
+{% endblock %}
+
