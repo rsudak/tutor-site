@@ -105,6 +105,55 @@
     .form-control::placeholder {
       color: var(--footer-text);
     }
+    
+    .form-control, .form-select {
+      background-color: var(--card-bg);
+      color: var(--text);
+    }
+    .form-control:focus, .form-select:focus {
+      background-color: var(--card-bg);
+      color: var(--text);
+      border-color: var(--link);
+      box-shadow: none;
+    }
+
+    .text-muted {
+      color: var(--footer-text) !important;
+    }
+
+    .navbar .navbar-brand {
+      color: var(--text) !important;
+    }
+
+    [data-theme='dark'] .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    [data-theme='dark'] .accordion-item {
+      background-color: var(--card-bg);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    [data-theme='dark'] .accordion-button {
+      background-color: var(--card-bg);
+      color: var(--text);
+    }
+
+    [data-theme='dark'] .accordion-button:not(.collapsed) {
+      background-color: #333;
+      color: var(--text);
+    }
+
+    [data-theme='dark'] .accordion-body {
+      background-color: var(--card-bg);
+      color: var(--text);
+    }
+
+    [data-theme='dark'] .accordion-button::after {
+      filter: brightness(5);
+    }
+
   </style>
 
 </head>

@@ -80,6 +80,15 @@ class Student(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender = db.Column(db.String(20), nullable=False)  # "student" или "admin"
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+
+    student = db.relationship("Student", backref="messages")
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -186,6 +195,32 @@ def student_profile():
         end_date=end_date
     )
 
+
+@app.route("/student/chat", methods=["GET", "POST"])
+def student_chat():
+    if not session.get("student_logged_in"):
+        return redirect("/login_student")
+
+    student = Student.query.get(session["student_id"])
+
+    if request.method == "POST":
+        text = request.form["message"]
+        new_msg = Message(sender="student", student_id=student.id, text=text)
+        db.session.add(new_msg)
+        db.session.commit()
+        return redirect("/student/chat")
+
+    messages = Message.query.filter_by(student_id=student.id).order_by(Message.timestamp).all()
+    return render_template("student_chat.html", messages=messages, current_user="student")
+
+@app.route("/student/chat/messages")
+def student_chat_messages():
+    if not session.get("student_logged_in"):
+        return "", 403
+
+    student = Student.query.get(session["student_id"])
+    messages = Message.query.filter_by(student_id=student.id).order_by(Message.timestamp).all()
+    return render_template("chat_messages.html", messages=messages, current_user="student")  # ← добавлено
 
 #Редактирование профиля ученика
 @app.route("/student/edit", methods=["GET", "POST"])
@@ -485,6 +520,36 @@ def delete_review(review_id):
     db.session.commit()
     return redirect("/admin/reviews")
 
+@app.route("/admin/messages")
+def admin_messages():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    students = Student.query.all()
+    return render_template("admin_chat_list.html", students=students)
+
+@app.route("/admin/messages/<int:student_id>", methods=["GET", "POST"])
+def admin_chat(student_id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+
+    student = Student.query.get_or_404(student_id)
+
+    if request.method == "POST":
+        msg = Message(sender="admin", student_id=student.id, text=request.form["message"])
+        db.session.add(msg)
+        db.session.commit()
+        return "", 204  # Не перезагружаем страницу
+
+    messages = Message.query.filter_by(student_id=student.id).order_by(Message.timestamp).all()
+    return render_template("admin_chat.html", messages=messages, student=student, current_user="admin")
+
+@app.route("/admin/messages/<int:student_id>/messages")
+def admin_chat_messages(student_id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+
+    messages = Message.query.filter_by(student_id=student_id).order_by(Message.timestamp).all()
+    return render_template("chat_messages.html", messages=messages, current_user="admin") 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -516,7 +581,9 @@ def api_docs():
 def admin_dashboard():
     if not session.get("logged_in"):
         return redirect("/login")
-    return render_template("admin_dashboard.html")
+    
+    students = Student.query.all()  # ← добавлено
+    return render_template("admin_dashboard.html", students=students)
 
 @app.route("/admin/stats")
 def admin_stats():

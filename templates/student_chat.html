@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Чат с репетитором{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Чат с репетитором</h1>
+
+<div class="card shadow-sm mb-4" style="max-height: 500px; overflow-y: auto;">
+  <div id="chat-body" class="card-body d-flex flex-column gap-3">
+    {% include 'chat_messages.html' %}
+  </div>
+</div>
+
+<form method="POST" class="d-flex gap-2" id="chat-form">
+  <input type="text" name="message" class="form-control" placeholder="Введите сообщение..." required>
+  <button type="submit" class="btn btn-primary">
+    <i class="bi bi-send"></i> Отправить
+  </button>
+</form>
+
+<a href="/student/profile" class="btn btn-link mt-3">← Назад в кабинет</a>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const chatBody = document.getElementById('chat-body');
+    const form = document.getElementById('chat-form');
+    const input = form.querySelector('input[name="message"]');
+
+    function scrollToBottom() {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          chatBody.scrollTop = chatBody.scrollHeight;
+        });
+      });
+    }
+
+    function updateChat(scroll = false) {
+      fetch('/student/chat/messages')
+        .then(res => res.text())
+        .then(html => {
+          chatBody.innerHTML = html;
+          if (scroll) scrollToBottom();
+        });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+
+      fetch(location.href, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ message })
+      }).then(() => {
+        input.value = '';
+        updateChat(true);
+      });
+    });
+
+    updateChat(true);
+    setInterval(() => updateChat(false), 5000);
+  });
+</script>
+
+{% endblock %}

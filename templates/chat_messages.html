@@ -1,0 +1,17 @@
+{% for msg in messages %}
+  <div class="{% if msg.sender == current_user %}text-end{% else %}text-start{% endif %}">
+    <div class="d-inline-block px-3 py-2 rounded"
+         style="
+           {% if msg.sender == current_user %}
+             background-color: #007bff; color: white;
+           {% else %}
+             background-color: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+           {% endif %}
+         ">
+      {{ msg.text }}
+    </div>
+    <div class="small text-muted mt-1">
+      {{ msg.timestamp.strftime('%d.%m.%Y %H:%M') }}
+    </div>
+  </div>
+{% endfor %}

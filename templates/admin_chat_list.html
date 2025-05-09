@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Чаты учеников{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Чаты с учениками</h1>
+
+{% if students %}
+  <ul class="list-group">
+    {% for student in students %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ student.name }} ({{ student.email }})
+        <a href="/admin/messages/{{ student.id }}" class="btn btn-sm btn-outline-primary">Открыть чат</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="text-muted">Пока нет учеников.</p>
+{% endif %}
+
+{% endblock %}

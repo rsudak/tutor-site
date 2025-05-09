@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Чат с учеником{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Чат с {{ student.name }}</h1>
+
+<div class="card shadow-sm mb-4" style="max-height: 500px; overflow-y: auto;" id="chat-container">
+  <div class="card-body d-flex flex-column gap-3" id="chat-messages">
+    {% include 'chat_messages.html' %}
+  </div>
+</div>
+
+<form method="POST" class="d-flex gap-2">
+  <input type="text" name="message" class="form-control" placeholder="Введите сообщение..." required>
+  <button type="submit" class="btn btn-primary">
+    <i class="bi bi-send"></i> Отправить
+  </button>
+</form>
+
+<a href="/admin/messages" class="btn btn-link mt-3">← Назад к списку</a>
+
+<script>
+  const chatContainer = document.getElementById("chat-container");
+  const form = document.querySelector('form');
+  const input = form.querySelector('input[name="message"]');
+
+  function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  function updateChat() {
+    fetch(location.pathname + "/messages")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("chat-messages").innerHTML = html;
+        scrollToBottom();
+      });
+  }
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const message = input.value.trim();
+    if (!message) return;
+
+    fetch(location.pathname, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ message: message })
+    }).then(() => {
+      input.value = "";
+      updateChat();
+    });
+  });
+
+  updateChat();
+  scrollToBottom();
+  setInterval(updateChat, 5000);
+</script>
+{% endblock %}
